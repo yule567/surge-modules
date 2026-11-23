@@ -12,14 +12,14 @@ https://raw.githubusercontent.com/yule567/surge-modules/main/YouTube.sgmodule
 
 此仓库托管 .sgmodule 配置，但 JavaScript 来自 [Maasea/sgmodule](https://github.com/Maasea/sgmodule)，不是独立维护的脚本。YouTube iOS 片头广告不保证全部去除；如果仍有广告，请查看 Surge 最近请求中 youtubei.googleapis.com 的脚本执行记录。
 
-## Spotify 去广告与取消强制随机播放（iOS）
+## Spotify 原创实验版（iOS）
 
-远程模块订阅：
+远程订阅：
 
 ```
 https://raw.githubusercontent.com/yule567/surge-modules/main/Spotify.sgmodule
 ```
 
-安装：Surge → 模块 → 从 URL 安装；确认「脚本」「HTTP 重写」和 MitM 已开启，CA 证书已信任。建议先登录 Spotify，再启用模块，关闭并重启 App。
+使用本仓库自编 `scripts/spotify-local.js`，**不再调用任何第三方 JS**。须启用 Surge 脚本与 MitM，信任 CA 证书。只在已匹配的 JSON 响应中尝试过滤广告展示字段和随机播放状态提示；Protobuf、音频广告流以及服务器端 Premium 权限都不会被修改。因此本实验版**不能保证去掉音频广告或强制随机播放**，不要当作已完成的 Premium 解锁。
 
-基于 [app2smile/rules](https://github.com/app2smile/rules/blob/master/module/spotify.module) 的规则，远程脚本仍从 app2smile 加载。上游称可尝试过滤播放广告、去除随机播放限制，但仅属于部分 Premium 功能修改，能否生效受版本、账号与服务器限制；不能保证完全解锁。不要与其他 Spotify 模块同时启用。
+原上游方案备份：`archive/Spotify-upstream.sgmodule`。测试本版时关闭其他 Spotify 模块。
