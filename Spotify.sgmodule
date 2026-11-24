@@ -1,7 +1,11 @@
-#!name=Spotify 原创实验版
-#!desc=自编 JSON 显示广告过滤及随机播放提示调整；免费版顺序播放/音频广告不保证有效
+#!name=Spotify 去广告增强版
+#!desc=独立广告域名拦截 + 原创 JSON 广告过滤；音频广告及顺序播放不保证有效
 #!category=去广告
 # No third-party script dependencies. Passes protobuf/binary responses through unchanged.
+
+[Rule]
+DOMAIN,ads-fa.spotify.com,REJECT
+DOMAIN,audio-ads.spotify.com,REJECT
 
 [Script]
 spotify-local = type=http-response,pattern=^https:\/\/(spclient\.wg\.spotify\.com|[\w-]+-spclient\.spotify\.com)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)(\?.*)?$,requires-body=true,max-size=1048576,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/scripts/spotify-local.js
