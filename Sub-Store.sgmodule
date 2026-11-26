@@ -1,0 +1,10 @@
+#!name=Sub-Store
+#!desc=机场订阅管理、合并、筛选及格式转换
+#!category=订阅管理
+
+[MITM]
+hostname = %APPEND% sub.store
+
+[Script]
+Sub-Store Core = type=http-request,pattern=^https?:\/\/sub\.store\/((download)|api\/(preview|sync|(utils\/node-info))),script-path=https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-1.min.js,requires-body=true,timeout=900,engine=auto,max-size=-1,argument="cors=https://sub-store.vercel.app,https://sub.xream.eu.org"
+Sub-Store Simple = type=http-request,pattern=^https?:\/\/sub\.store,script-path=https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-0.min.js,requires-body=true,timeout=900,engine=auto,max-size=-1,argument="cors=https://sub-store.vercel.app,https://sub.xream.eu.org"
