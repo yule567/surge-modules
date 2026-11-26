@@ -1,4 +1,4 @@
-#!name=Spotify 去广告增强版
+#!name=Spotify 去广告
 #!desc=独立广告域名及广告接口拦截 + 原创 JSON 广告过滤；音频广告及顺序播放不保证有效
 #!category=去广告
 # No third-party script dependencies. Passes protobuf/binary responses through unchanged.
