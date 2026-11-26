@@ -1,4 +1,4 @@
-#!name=Web 控制面板
+#!name=Surge 控制面板
 #!desc=启用网页控制面板，密码通过本地模块参数设置
 #!category=网络工具
 #!arguments=password,listen:127.0.0.1
