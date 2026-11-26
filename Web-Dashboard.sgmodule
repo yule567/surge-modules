@@ -1,0 +1,10 @@
+#!name=Web 控制面板
+#!desc=启用网页控制面板，密码通过本地模块参数设置
+#!category=网络工具
+#!arguments=password,listen:127.0.0.1
+#!arguments-desc=请填写独立强密码；如需可信局域网访问，将 listen 改为 0.0.0.0。
+
+[General]
+http-api = {{{password}}}@{{{listen}}}:6171
+http-api-tls = false
+http-api-web-dashboard = true
