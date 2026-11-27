@@ -3,7 +3,8 @@
 #!category=去广告
 
 [Rule]
-DOMAIN,roovza.launches.appsflyersdk.com,REJECT
+DOMAIN-SUFFIX,appsflyersdk.com,REJECT
+DOMAIN-SUFFIX,appsflyer.com,REJECT
 DOMAIN,p16-ad-va.tiktokcdn.com,REJECT
 DOMAIN,p19-ad-sg.tiktokcdn.com,REJECT
 DOMAIN,p16-tiktok-ads-sg.tiktokcdn.com,REJECT
