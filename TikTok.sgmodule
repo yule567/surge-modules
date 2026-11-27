@@ -1,5 +1,5 @@
 #!name=TikTok 去广告
-#!desc=轻量版：仅拦截已知独立广告素材域名，不修改视频流、评论或关注接口；信息流广告不保证完全去除。
+#!desc=双层过滤：独立广告域名 + 明确标记的 JSON 推荐流广告；解析失败原样放行。不保证所有地区和版本有效。
 #!category=去广告
 
 [Rule]
@@ -7,3 +7,9 @@ DOMAIN,p16-ad-va.tiktokcdn.com,REJECT
 DOMAIN,p19-ad-sg.tiktokcdn.com,REJECT
 DOMAIN,p16-tiktok-ads-sg.tiktokcdn.com,REJECT
 DOMAIN,p19-tiktok-ads-sg.tiktokcdn.com,REJECT
+
+[Script]
+TikTok-Feed = type=http-response,pattern=^https://api(?:16|19|22)(?:-normal)?-(?:useast5|useast8|alisg|sg|us)\.tiktokv\.com/aweme/v[12]/feed/(?:\?|$),requires-body=true,max-size=524288,timeout=3,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/scripts/TikTok.js?v=2
+
+[MITM]
+hostname = %APPEND% api16-normal-useast5.tiktokv.com, api19-normal-useast5.tiktokv.com, api22-normal-useast5.tiktokv.com, api16-normal-alisg.tiktokv.com, api19-normal-alisg.tiktokv.com, api22-normal-alisg.tiktokv.com
