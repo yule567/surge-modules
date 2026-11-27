@@ -1,7 +1,0 @@
-#!name=TikTok 去广告
-#!desc=安全模式：仅拦截第三方 AppsFlyer 数据追踪，不解密或修改 TikTok 接口。
-#!category=去广告
-
-[Rule]
-DOMAIN-SUFFIX,appsflyersdk.com,REJECT
-DOMAIN-SUFFIX,appsflyer.com,REJECT
