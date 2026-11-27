@@ -1,17 +1,17 @@
 #!name=智能广告嗅探
-#!desc=优先展示广告候选与精准规则，隐藏普通追踪，支持手动清空，不主动拦截、不上传数据
+#!desc=支持 TikTok 信息流广告候选、优先展示广告线索，隐藏普通追踪，支持手动清空，不主动拦截、不上传数据
 #!category=网络工具
 
 [MITM]
-hostname = %APPEND% *.jd.com, *.360buyimg.com, *.taobao.com, *.tmall.com, *.alicdn.com, *.pinduoduo.com, *.yangkeduo.com, *.pddpic.com, *.pdd.net, *.snssdk.com, *.pangle.io, gdt.qq.com, e.qq.com, ad.qq.com, *.doubleclick.net, *.googlesyndication.com
+hostname = %APPEND% *.jd.com, *.360buyimg.com, *.taobao.com, *.tmall.com, *.alicdn.com, *.pinduoduo.com, *.yangkeduo.com, *.pddpic.com, *.pdd.net, *.snssdk.com, *.tiktok.com, *.tiktokv.com, *.tiktokv.us, *.tiktokv.eu, *.musical.ly, *.pangle.io, gdt.qq.com, e.qq.com, ad.qq.com, *.doubleclick.net, *.googlesyndication.com
 
 [Script]
-Ad-Probe-Request = type=http-request,pattern=^https:\/\/(?:[^/]+\.)?(?:jd\.com|360buyimg\.com|taobao\.com|tmall\.com|alicdn\.com|pinduoduo\.com|yangkeduo\.com|pddpic\.com|pdd\.net|snssdk\.com|pangle\.io|gdt\.qq\.com|e\.qq\.com|ad\.qq\.com|doubleclick\.net|googlesyndication\.com)\/,requires-body=true,max-size=262144,timeout=5,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js
-Ad-Probe-Response = type=http-response,pattern=^https:\/\/(?:[^/]+\.)?(?:jd\.com|360buyimg\.com|taobao\.com|tmall\.com|alicdn\.com|pinduoduo\.com|yangkeduo\.com|pddpic\.com|pdd\.net|snssdk\.com|pangle\.io|gdt\.qq\.com|e\.qq\.com|ad\.qq\.com|doubleclick\.net|googlesyndication\.com)\/,requires-body=true,max-size=262144,timeout=5,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js
+Ad-Probe-Request = type=http-request,pattern=^https:\/\/(?:[^/]+\.)?(?:jd\.com|360buyimg\.com|taobao\.com|tmall\.com|alicdn\.com|pinduoduo\.com|yangkeduo\.com|pddpic\.com|pdd\.net|snssdk\.com|tiktok\.com|tiktokv\.com|tiktokv\.us|tiktokv\.eu|musical\.ly|pangle\.io|gdt\.qq\.com|e\.qq\.com|ad\.qq\.com|doubleclick\.net|googlesyndication\.com)\/,requires-body=true,max-size=262144,timeout=5,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js
+Ad-Probe-Response = type=http-response,pattern=^https:\/\/(?:[^/]+\.)?(?:jd\.com|360buyimg\.com|taobao\.com|tmall\.com|alicdn\.com|pinduoduo\.com|yangkeduo\.com|pddpic\.com|pdd\.net|snssdk\.com|tiktok\.com|tiktokv\.com|tiktokv\.us|tiktokv\.eu|musical\.ly|pangle\.io|gdt\.qq\.com|e\.qq\.com|ad\.qq\.com|doubleclick\.net|googlesyndication\.com)\/,requires-body=true,max-size=262144,timeout=5,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js
 Ad-Probe-Panel = type=generic,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js,timeout=5
 
 Ad-Probe-Reset = type=generic,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js,timeout=5,argument=reset
 
 [Panel]
-Ad-Probe = title="智能广告嗅探 V6",content="等待捕获",style=info,script-name=Ad-Probe-Panel,update-interval=10
+Ad-Probe = title="智能广告嗅探 V7",content="等待捕获",style=info,script-name=Ad-Probe-Panel,update-interval=10
 Ad-Probe-Reset = title="清空嗅探记录",content="点击右侧刷新按钮清空",style=info,script-name=Ad-Probe-Reset
