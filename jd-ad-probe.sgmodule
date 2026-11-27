@@ -1,0 +1,12 @@
+#!name=京东 广告嗅探
+#!desc=自动记录京东接口标识，筛选疑似广告；本地面板展示，不拦截、不上传。
+
+[MITM]
+hostname = %APPEND% api.m.jd.com, ads-img-x.jd.com, ads-video-x.jd.com, dsp-x.jd.com, bdsp-x.jd.com
+
+[Script]
+JD-Ad-Probe = type=http-request,pattern=^https:\/\/(?:api\.m|ads-img-x|ads-video-x|dsp-x|bdsp-x)\.jd\.com(?::443)?\/,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/jd-ad-probe.js,requires-body=false,timeout=5
+JD-Ad-Probe-Panel = type=generic,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/jd-ad-probe.js,timeout=5
+
+[Panel]
+JD-Ad-Probe = title="京东 广告嗅探",content="打开京东后刷新面板",style=info,script-name=JD-Ad-Probe-Panel,update-interval=1
