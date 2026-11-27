@@ -1,0 +1,9 @@
+#!name=TikTok 去广告
+#!desc=轻量版：仅拦截已知独立广告素材域名，不修改视频流、评论或关注接口；信息流广告不保证完全去除。
+#!category=去广告
+
+[Rule]
+DOMAIN,p16-ad-va.tiktokcdn.com,REJECT
+DOMAIN,p19-ad-sg.tiktokcdn.com,REJECT
+DOMAIN,p16-tiktok-ads-sg.tiktokcdn.com,REJECT
+DOMAIN,p19-tiktok-ads-sg.tiktokcdn.com,REJECT
