@@ -1,12 +1,28 @@
 (function(){
-var out={},key="universal_ad_probe_v5",panel=typeof $request==="undefined";
+var out={},key="universal_ad_probe_v6",panel=typeof $request==="undefined";
 try{
 var s;try{s=JSON.parse($persistentStore.read(key)||"{}");}catch(e){s={};}
 if(!s.items||!s.start||Date.now()-s.start>=86400000)s={start:Date.now(),req:0,resp:0,items:{}};
 if(panel){
-var rows=Object.keys(s.items).map(function(k){return s.items[k];}).sort(function(a,b){return b.score-a.score||b.n-a.n;});
-rows=rows.filter(function(r){return r.score>0;});
-out={title:"智能广告嗅探 V5",style:"info",content:"请求 "+s.req+" | 响应 "+s.resp+" | 疑似 "+rows.filter(function(r){return r.score>0;}).length+"\n"+(rows.slice(0,15).map(function(r){return (r.tags.indexOf("追踪线索")>=0?"[隐私追踪] ":r.score>=4?"[高置信候选] ":r.score>=2?"[广告线索] ":"[待核查] ")+r.host+(r.id?" / "+r.id:(r.path?" / "+r.path:""))+" ×"+r.n+(r.tags.length?" "+r.tags.join("、"):"")+(r.tags.indexOf("独立广告候选")>=0?"\n参考: DOMAIN,"+r.host+",REJECT":(r.id&&r.score>=4?"\n候选接口: "+r.id:(r.path&&r.score>=3?"\n候选路径: "+r.path:"")));}).join("\n")||"暂无广告或追踪线索")};
+if(typeof $argument!=="undefined"&&$argument==="reset"){
+if(typeof $trigger!=="undefined"&&$trigger==="button"){
+$persistentStore.write(JSON.stringify({start:Date.now(),req:0,resp:0,items:{}}),key);
+out={title:"清空嗅探记录",content:"已清空，请刷新主面板",style:"info"};
+}else out={title:"清空嗅探记录",content:"点击右侧刷新按钮清空",style:"info"};
+$done(out);return;
+}
+var rows=Object.keys(s.items).map(function(k){return s.items[k];});
+function strong(r){return r.tags.some(function(t){return ["广告域名","独立广告候选","广告接口","开屏","广告素材","广告跟踪","DSP广告追踪"].indexOf(t)>=0;});}
+function esc(v){return v.replace(/\./g,"\\.");}
+function rule(r){
+if(r.tags.indexOf("独立广告候选")>=0)return "DOMAIN,"+r.host+",REJECT";
+if(r.path&&r.path!=="/"&&r.tags.indexOf("DSP广告追踪")>=0)return "^https:\\/\\/"+esc(r.host)+esc(r.path).replace(/\//g,"\\/")+"(?:[/?]|$) - reject";
+if(r.id)return "接口参数: "+r.id+"（需确认参数位置）";
+return "";
+}
+var hidden=rows.filter(function(r){return r.tags.indexOf("追踪线索")>=0&&!strong(r);}).length;
+rows=rows.filter(function(r){return strong(r)||r.tags.indexOf("全屏素材待核查")>=0;}).sort(function(a,b){return Number(strong(b))-Number(strong(a))||b.score-a.score||b.n-a.n;});
+out={title:"智能广告嗅探 V6",style:"info",content:"广告候选 "+rows.length+" | 隐藏追踪 "+hidden+"\n"+(rows.slice(0,10).map(function(r){var candidate=rule(r);return (strong(r)?"[广告线索] ":"[素材待核查] ")+r.host+(r.id?" · "+r.id:(r.path?r.path:""))+" ×"+r.n+"\n"+r.tags.join("、")+(candidate?"\n候选: "+candidate:"");}).join("\n\n")||"暂无广告线索")};
 }else{
 var url=String($request.url||""),host=(url.match(/^https:\/\/([a-z0-9.-]+)(?::443)?\//i)||[])[1];
 if(!host||!/(^|\.)(jd\.com|360buyimg\.com|taobao\.com|tmall\.com|alicdn\.com|pinduoduo\.com|yangkeduo\.com|pddpic\.com|pdd\.net|snssdk\.com|pangle\.io|gdt\.qq\.com|e\.qq\.com|ad\.qq\.com|doubleclick\.net|googlesyndication\.com)$/i.test(host)||/(^|[.-])(pay|payment|cashier|wallet|passport|login|auth|sso|account|bank|security|trade|order|checkout|cdnpay)([.-]|$)/i.test(host)||/(?:login|passport|payment|cashier|checkout|oauth|token|password|verify|account|address|order|profile|wallet)/i.test(url.split("?")[0])){$done({});return;}
@@ -37,6 +53,6 @@ if(score===0){$done({});return;}
 if(s.items[k]){var r=s.items[k];r.n++;r.score=Math.max(r.score,score);tags.forEach(function(t){if(r.tags.indexOf(t)<0)r.tags.push(t);});}
 $persistentStore.write(JSON.stringify(s),key);
 }
-}catch(e){if(panel)out={title:"智能广告嗅探 V5",content:"统计读取失败",style:"info"};}
+}catch(e){if(panel)out={title:"智能广告嗅探 V6",content:"统计读取失败",style:"info"};}
 $done(out);
 })();
