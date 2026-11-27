@@ -1,5 +1,5 @@
 (function probe(env){
-  const {request,response,store,argument,trigger,done,log,now}=env;
+  const {request,response,store,done,log,now}=env;
   const key="ad_probe_v8"; const title="智能广告嗅探 V8";
   const fresh=()=>({start:now,items:[]});
   const read=()=>{try{const s=JSON.parse(store.read(key)||"null");if(s&&Array.isArray(s.items)&&Number.isFinite(s.start)&&now-s.start<86400000&&now>=s.start)return s;}catch(e){}return fresh();};
@@ -7,13 +7,8 @@
   let result={};
   try{
     if(!request){
-      if(argument==="reset"){
-        if(trigger==="button"){write(fresh());result={title:"清空嗅探记录",content:"已清空，请刷新主面板",style:"info"};}
-        else result={title:"清空嗅探记录",content:"点击刷新按钮清空",style:"info"};
-      }else{
         const items=read().items.slice().sort((a,b)=>b.score-a.score||b.n-a.n);
         result={title,style:"info",content:"仅检测 · "+items.length+" 条候选 · 24小时\n"+(items.slice(0,10).map(r=>`[${r.score>=3?"较强":"待核查"}] ${r.host}${r.path} ×${r.n}\n${r.tag}`).join("\n\n")||"暂无广告线索")};
-      }
     }else{
       const m=/^https:\/\/([a-z0-9.-]+)(?::443)?(\/[^?#]*)?(?:[?#]|$)/i.exec(String(request.url||""));
       if(m){
@@ -54,4 +49,4 @@
     }
   }catch(e){log("广告嗅探 V8：处理失败，流量原样放行");if(!request)result={title,content:"统计读取或写入失败",style:"info"};}
   done(result);
-})({request:typeof $request==='undefined'?null:$request,response:typeof $response==='undefined'?null:$response,store:$persistentStore,argument:typeof $argument==='undefined'?'':$argument,trigger:typeof $trigger==='undefined'?'':$trigger,done:$done,log:function(s){console.log(s);},now:Date.now()});
+})({request:typeof $request==='undefined'?null:$request,response:typeof $response==='undefined'?null:$response,store:$persistentStore,done:$done,log:function(s){console.log(s);},now:Date.now()});
