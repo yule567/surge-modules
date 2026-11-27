@@ -1,17 +1,16 @@
 #!name=智能广告嗅探
-#!desc=优先展示广告候选与精准规则，隐藏普通追踪，支持手动清空，不主动拦截、不上传数据
+#!desc=V8 安全优先；仅指定域名及京东接口，非全局嗅探，不拦截、不上传，建议按需开启
 #!category=网络工具
 
 [MITM]
-hostname = %APPEND% *.jd.com, *.360buyimg.com, *.taobao.com, *.tmall.com, *.alicdn.com, *.pinduoduo.com, *.yangkeduo.com, *.pddpic.com, *.pdd.net, *.snssdk.com, *.pangle.io, gdt.qq.com, e.qq.com, ad.qq.com, *.doubleclick.net, *.googlesyndication.com
+hostname = %APPEND% ads-img-x.jd.com, ads-video-x.jd.com, dsp-x.jd.com, bdsp-x.jd.com, im-x.jd.com, api.m.jd.com, ad.qq.com, gdt.qq.com, pagead2.googlesyndication.com, googleads.g.doubleclick.net
 
 [Script]
-Ad-Probe-Request = type=http-request,pattern=^https:\/\/(?:[^/]+\.)?(?:jd\.com|360buyimg\.com|taobao\.com|tmall\.com|alicdn\.com|pinduoduo\.com|yangkeduo\.com|pddpic\.com|pdd\.net|snssdk\.com|pangle\.io|gdt\.qq\.com|e\.qq\.com|ad\.qq\.com|doubleclick\.net|googlesyndication\.com)\/,requires-body=true,max-size=262144,timeout=5,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js
-Ad-Probe-Response = type=http-response,pattern=^https:\/\/(?:[^/]+\.)?(?:jd\.com|360buyimg\.com|taobao\.com|tmall\.com|alicdn\.com|pinduoduo\.com|yangkeduo\.com|pddpic\.com|pdd\.net|snssdk\.com|pangle\.io|gdt\.qq\.com|e\.qq\.com|ad\.qq\.com|doubleclick\.net|googlesyndication\.com)\/,requires-body=true,max-size=262144,timeout=5,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js
-Ad-Probe-Panel = type=generic,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js,timeout=5
-
-Ad-Probe-Reset = type=generic,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js,timeout=5,argument=reset
+Ad-Probe-Request = type=http-request,pattern=^https://(?:(?:ads-img-x\.jd\.com|ads-video-x\.jd\.com|dsp-x\.jd\.com|bdsp-x\.jd\.com|ad\.qq\.com|gdt\.qq\.com|pagead2\.googlesyndication\.com|googleads\.g\.doubleclick\.net)(?::443)?(?:/|$)|im-x\.jd\.com(?::443)?/dsp(?:[/?]|$)),requires-body=false,timeout=3,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js?v=8
+Ad-Probe-Response = type=http-response,pattern=^https://api\.m\.jd\.com(?::443)?/(?:client\.action|api)(?:[/?]|$),requires-body=true,max-size=131072,timeout=3,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js?v=8
+Ad-Probe-Panel = type=generic,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js?v=8,timeout=3
+Ad-Probe-Reset = type=generic,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/ad-probe.js?v=8,timeout=3,argument=reset
 
 [Panel]
-Ad-Probe = title="智能广告嗅探 V6",content="等待捕获",style=info,script-name=Ad-Probe-Panel,update-interval=10
+Ad-Probe = title="智能广告嗅探 V8",content="等待捕获",style=info,script-name=Ad-Probe-Panel,update-interval=30
 Ad-Probe-Reset = title="清空嗅探记录",content="点击右侧刷新按钮清空",style=info,script-name=Ad-Probe-Reset
