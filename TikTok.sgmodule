@@ -1,17 +1,7 @@
 #!name=TikTok 去广告
-#!desc=独立广告域名与推荐流显式广告过滤；未知格式原样放行，记录命中日志。
+#!desc=安全模式：仅拦截第三方 AppsFlyer 数据追踪，不解密或修改 TikTok 接口。
 #!category=去广告
 
 [Rule]
 DOMAIN-SUFFIX,appsflyersdk.com,REJECT
 DOMAIN-SUFFIX,appsflyer.com,REJECT
-DOMAIN,p16-ad-va.tiktokcdn.com,REJECT
-DOMAIN,p19-ad-sg.tiktokcdn.com,REJECT
-DOMAIN,p16-tiktok-ads-sg.tiktokcdn.com,REJECT
-DOMAIN,p19-tiktok-ads-sg.tiktokcdn.com,REJECT
-
-[Script]
-TikTok-Feed = type=http-response,pattern=^https://api[0-9]*(?:-[a-z0-9]+)*\.tiktokv\.com/aweme/v[12]/(?:feed|feed/preload)/?(?:\?|$),requires-body=true,max-size=2097152,timeout=5,script-path=https://raw.githubusercontent.com/yule567/surge-modules/main/scripts/TikTok.js?v=3
-
-[MITM]
-hostname = %APPEND% api*.tiktokv.com
